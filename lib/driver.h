@@ -1,6 +1,6 @@
 #pragma once
 #include <Arduino.h>
-#include "DWM3000_registers.h"
+#include "registers.h"
 
 // Hardware pins 
 #define RST_PIN 27
