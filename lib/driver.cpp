@@ -680,6 +680,10 @@ void DWM3000Class::writeFastCommand(int cmd)
    sendBytes(header_arr, 1, 0);
 }
 
+uint32_t DWM3000Class::
+
+
+
 uint32_t DWM3000Class::readOrWriteFullAddress(uint32_t base, uint32_t sub, uint32_t data, uint32_t dataLen, uint32_t readWriteBit)
 {
    uint32_t header = 0x00;
@@ -761,7 +765,8 @@ uint32_t DWM3000Class::readOrWriteFullAddress(uint32_t base, uint32_t sub, uint3
    }
 }
 
-uint32_t DWM3000Class::sendBytes(int b[], int lenB, int recLen) //renamed from sendBytes to spiTransaction()
+uint32_t DWM3000Class::sendBytes(int b[], int lenB, int recLen) 
+//renamed from sendBytes to spiTransaction()
 {
    digitalWrite(CS_PIN, LOW);
    for (int i = 0; i < lenB; i++)
@@ -811,10 +816,5 @@ int DWM3000Class::checkForDevID()
        return 0;
    }
    return 1;
-}
-
-// uint32_t DWM3000Class::testSPIConnection()
-// {
-//    int device_ID = 
 }
 

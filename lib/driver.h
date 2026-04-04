@@ -6,10 +6,22 @@
 #define RST_PIN 27
 #define CS_PIN 4
 
+struct DWM3000_Config_t {
+   uint8_t channel;
+   uint8_t preamble_length;
+   uint8_t preamble_code;
+   uint8_t pac_size;
+   uint8_t datarate;
+   uint8_t phr_mode;
+   uint8_t phr_rate;
+};
+
 class DWM3000Class
 {
-public:
-   static int config[9];
+   public:
+
+   static DWM3000_Config_t
+
 
    // Chip Setup
    static void begin();
@@ -19,8 +31,8 @@ public:
    static void setupGPIO();
 
    // Double-Sided Ranging
-   static void ds_sendFrame(int stage);
-   static void ds_sendRTInfo(int t_roundB, int t_replyB);
+   static void ds_sendFrame(int stage); //doubleSidedSendFrame
+   static void ds_sendRTInfo(int t_roundB, int t_replyB); //
    static int ds_processRTInfo(int t_roundA, int t_replyA, int t_roundB, int t_replyB, int clock_offset);
    static int ds_getStage();
    static bool ds_isErrorFrame();
@@ -43,12 +55,12 @@ public:
    static void setDestinationID(int destID);
 
    // Status Checks
-   static int receivedFrameSucc();
-   static int sentFrameSucc();
+   static int receivedFrameSucc(); //getReceiveStatus
+   static int sentFrameSucc();   //getTransmitStatus
    static int getSenderID();
    static int getDestinationID();
-   static bool checkForIDLE();
-   static bool checkSPI();
+   static bool checkForIDLE(); //isIdle
+   static bool checkSPI();      //isSPIWorking
 
    // Radio Analytics
    static double getSignalStrength();
@@ -61,16 +73,17 @@ public:
    static unsigned long long readTXTimestamp();
 
    // Chip Interaction
-   static uint32_t write(int base, int sub, uint32_t data, int data_len);
-   static uint32_t write(int base, int sub, uint32_t data);
+   static uint32_t write(int base, int sub, uint32_t data, int data_len); //should be write32bit, change data type of base to uint8_t, sub to uint16_t
+   static uint32_t write(int base, int sub, uint32_t data);               //should be write32bit, change dat atype of base, sub
+   //write8bit potentially?
    static uint32_t read32bit(int base, int sub);
    static uint8_t read8bit(int base, int sub);
    static uint32_t readOTP(uint8_t addr);
 
    // Radio Stage Settings / Transfer and Receive Modes
-   static void standardTX();
-   static void standardRX();
-   static void TXInstantRX();
+   static void standardTX(); //standardTransmit
+   static void standardRX();  //standardReceive
+   static void TXInstantRX(); //transmitInstantReceive
 
    // DWM3000 Firmware Interaction
    static void softReset();
@@ -95,14 +108,15 @@ private:
 
    // SPI Interaction
    static uint32_t readOrWriteFullAddress(uint32_t base, uint32_t sub, uint32_t data, uint32_t data_len, uint32_t readWriteBit);
-   static uint32_t sendBytes(int b[], int lenB, int recLen);
+   static uint32_t sendBytes(int b[], int lenB, int recLen); //rename to sendBytes to spiTransaction()
+   static uint32_t readWriteRegister(int b[], int lenB, int recLen); //combines sendBytes and readOrWriteFullAddress
 
    // Soft Reset Helper Method
    static void clearAONConfig();
 
    // Other Helper Methods
    static unsigned int countBits(unsigned int number);
-   static int checkForDevID();
+   static int checkForDevID(); //hasValidDevID
 };
 
 extern DWM3000Class DWM3000;
